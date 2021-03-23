@@ -1,0 +1,10 @@
+print("행렬의 규격을 입력하세요.", end=' ')
+n = int(input())
+print("행렬 1의 데이터를 입력하세요.", end=' ')
+mat1 = list(map(int, input().split()))
+print("행렬 2의 데이터를 입력하세요.", end=' ')
+mat2 = list(map(int, input().split()))
+
+print("방식1")
+print("행렬1(%d)", %(n*n))
+print("행렬2(%d)", %(n*n))

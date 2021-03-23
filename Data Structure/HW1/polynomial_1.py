@@ -1,3 +1,11 @@
+"""
+2021/CAU/CS/DATA STRUCTURE
+20172674 신동녘
+HW1
+Polynomial1
+"""
+
+
 # 다항식 클래스 선언부
 class polynomial():
     def __init__(self, coef):
@@ -7,8 +15,15 @@ class polynomial():
     # 다항식 출력함수
     def print_poly(self):
         for i in range(self.degree):
-            print("%d " %(abs(self.coef[i])), end='')
-        print()
+            if i == self.degree-1:
+                print("%d" %(abs(self.coef[i])))
+            else:
+                if self.coef[i] != 0:
+                    print("%d * x^%d" %(abs(self.coef[i]), self.degree-i-1), end='')
+                    if self.coef[i+1] >= 0:
+                        print(" + ", end='')
+                    else:
+                        print(" - ", end='')
 
     # 다항식에 계산 함수
     def calc_poly(self, num):
@@ -18,7 +33,7 @@ class polynomial():
         return result
 
 # 두 다항식을 더하는 함수
-def poly_add(a,b):
+def poly_add(a, b):
     z = [] # 결과를 담을 다항식 선언
     apos = bpos = 0 # 배열(다항식)을 순차적으로 탐색하기 위한 인덱스
     degree_a = a.degree # 다항식 a의 차수
@@ -44,7 +59,8 @@ def poly_add(a,b):
             degree_b -= 1
     return polynomial(z)
 
-def poly_mult(a,b):
+# 두 다항식을 곱하는 함수
+def poly_mult(a, b):
     degree_a = a.degree
     degree_b = b.degree
     # 곱해서 생성되는 다항식은 polymonial class의 정의상 두 차수 합의 -1이다.
