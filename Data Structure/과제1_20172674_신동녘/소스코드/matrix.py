@@ -36,6 +36,7 @@ def add_normal(a, b, n):
             c[i][j] = a[i][j] + b[i][j]
     return c
 
+
 # 2차원 배열 행렬 곱셈 함수
 def multiply_normal(a, b, n):
     c = [[0] * n for _ in range(n)]
@@ -68,6 +69,7 @@ print("행렬 1*2(%d)" %(n*n))
 d = multiply_normal(mat1, mat2, n)
 print_normal(d)
 print("******")
+
 
 # 2차원 배열 행렬을 희소행렬로 바꾸는 함수
 def sparse_matrix(matrix, n):
@@ -142,7 +144,7 @@ mat3 = sparse_matrix(mat1, n)
 print("행렬3(%d)" %(3*len(mat3)))
 print_sparse(mat3)
 mat4 = sparse_matrix(mat2, n)
-print("행렬4(%d)" %(3*len(mat3)))
+print("행렬4(%d)" %(3*len(mat4)))
 print_sparse(mat4)
 
 e = add_sparse(mat3, mat4)
@@ -152,11 +154,3 @@ f = multiply_sparse(mat3, mat4)
 print("행렬 3*4(%d)" %(3*len(f)))
 print_sparse(f)
 print("******")
-
-
-"""
-input_ex
-3
-1 0 3 0 0 0 2 0 0
-2 0 1 0 2 0 0 1 0
-"""

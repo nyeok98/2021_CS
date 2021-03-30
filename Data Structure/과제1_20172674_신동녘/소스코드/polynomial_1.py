@@ -2,25 +2,25 @@
 2021/CAU/CS/DATA STRUCTURE
 20172674 신동녘
 HW1
-Polynomial2
+Polynomial1
 """
 
 
 # 다항식 클래스 선언부
 class polynomial():
     def __init__(self, coef):
-        self.coef_deg = coef
+        self.coef = coef
         self.degree = len(coef)
 
     # 다항식 출력함수
     def print_poly(self):
         for i in range(self.degree):
-            if i == self.degree - 1:
-                print("%.1f" % (abs(self.coef_deg[i][0])))
+            if i == self.degree-1:
+                print("%d" %(abs(self.coef[i])))
             else:
-                if self.coef_deg[i][0] != 0:
-                    print("%.1f * x^%d" % (abs(self.coef_deg[i][0]), self.coef_deg[i][1]), end='')
-                    if self.coef_deg[i+1][0] >= 0:
+                if self.coef[i] != 0:
+                    print("%d * x^%d" %(abs(self.coef[i]), self.degree-i-1), end='')
+                    if self.coef[i+1] >= 0:
                         print(" + ", end='')
                     else:
                         print(" - ", end='')
@@ -29,7 +29,7 @@ class polynomial():
     def calc_poly(self, num):
         result = 0
         for i in range(0, self.degree):
-            result += self.coef_deg[i][0] * pow(num, self.coef_deg[i][1])
+            result += self.coef[i]*pow(num, self.degree-i-1)
         return result
 
 # 두 다항식을 더하는 함수
@@ -39,60 +39,46 @@ def poly_add(a, b):
     degree_a = a.degree # 다항식 a의 차수
     degree_b = b.degree # 다항식 b의 차수
 
-    while(apos < degree_a) and (bpos < degree_b):
+    while(degree_a > 0) and (degree_b > 0):
         # a가 차수가 더 높다면
-        if a.coef_deg[apos][1] > b.coef_deg[bpos][1]:
-            z.append([a.coef_deg[apos][0], a.coef_deg[apos][1]])
+        if degree_a > degree_b:
+            z.append(a.coef[apos])
             apos += 1
+            degree_a -= 1
         # a와 b가 차수가 같다면
-        elif a.coef_deg[apos][1] == b.coef_deg[bpos][1]:
-            z.append([a.coef_deg[apos][0] + b.coef_deg[bpos][0], a.coef_deg[apos][1]])
+        elif degree_a == degree_b:
+            z.append(a.coef[apos] + b.coef[bpos])
             apos += 1
             bpos += 1
+            degree_a -= 1
+            degree_b -= 1
         # b가 차수가 높다면
         else:
-            z.append([b.coef_deg[bpos][0], b.coef_deg[bpos][1]])
+            z.append(b.coef[bpos])
             bpos += 1
+            degree_b -= 1
     return polynomial(z)
 
+# 두 다항식을 곱하는 함수
 def poly_mult(a, b):
     degree_a = a.degree
     degree_b = b.degree
+    # 곱해서 생성되는 다항식은 polymonial class의 정의 상 두 차수 합의 -1이다.
+    z = [0]*(degree_a+degree_b-1)
 
-    # 곱셈 결과를 담을 리스트 z
-    z = []
-    # z가 가지고 있는 차수를 담을 리스트
-    z_list = []
     for i in range(degree_a):
         for j in range(degree_b):
-            # 임시로 곱셈 결과를 해당 다항식의 방식대로 저장
-            temp = [a.coef_deg[i][0]*b.coef_deg[j][0], a.coef_deg[i][1]+b.coef_deg[j][1]]
-            if temp[1] in z_list: # 같은 차수가 이미 있다면
-                for k in range(len(z)):
-                    # 해당 차수의 계수를 증가시켜준다.
-                    if z[k][1] == temp[1]:
-                        z[k][0] += temp[0]
-            else: # 같은 차수가 없다면
-                z.append(temp) # 임시 다항식을 z에 추가해주고
-                z_list.append(temp[1]) # 해당 차수가 있음을 리스트에 추가하여 표기한다.
+            z[i+j] += a.coef[i]*b.coef[j]
 
     return polynomial(z)
-
 
 # 수식 1과 2를 입력받는 부분
 print("수식 1을 입력하세요: ", end='')
 exp1 = list(map(int, input().split()))
-temp1 = []
-for i in range(len(exp1)//2):
-    temp1.append([exp1[i*2],exp1[i*2+1]])
-a = polynomial(temp1)
-
+a = polynomial(exp1)
 print("수식 2를 입력하세요: ", end='')
 exp2 = list(map(int, input().split()))
-temp2 = []
-for i in range(len(exp2)//2):
-    temp2.append([exp2[i*2],exp2[i*2+1]])
-b = polynomial(temp2)
+b = polynomial(exp2)
 
 # 수식 1과 2에 대한 연산을 진행하는 부분
 c = poly_add(a, b)
@@ -114,3 +100,5 @@ while (True):
         print("결과값은 %d" % (result))
     else:
         print("입력이 잘못되었습니다.")
+
+
